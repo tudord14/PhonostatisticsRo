@@ -1,3 +1,3 @@
 # PhonostatisticsRo
 
-  The main goal of this project is to study the Romanian language through statistical models, aiming to extract properties that could provide deeper insights into the language. The project will be generalized to include other languages as well.
+  The goal of this project is to analyze languages using statistical models, aiming to uncover properties that offer deeper insights into their structure. Initially developed to study the Romanian language, all functions are designed to be adaptable for any language.
