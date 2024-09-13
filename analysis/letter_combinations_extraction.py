@@ -120,7 +120,7 @@ def select_and_process_multiple_folders():
                 combinations_df = process_text_file(file_path)
 
                 output_csv_path = os.path.join(directory_path,
-                                               f"{os.path.splitext(filename)[0]}_Combinations_WaitingTimes_delta1.csv")
+                                               f"{os.path.splitext(filename)[0]}_Combinations_WaitingTimes.csv")
                 combinations_df.to_csv(output_csv_path, index=False)
 
                 print(f"Processed {filename} and saved to {output_csv_path}")
