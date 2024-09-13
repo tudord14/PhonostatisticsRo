@@ -3,9 +3,13 @@ import unicodedata
 import os
 from tkinter import Tk, filedialog, messagebox
 
-########
-# Dictionary that holds all the letters of the alphabet
-#######
+
+"""
+
+ Dictionary that holds all the letters of the alphabet
+
+"""
+
 dictionar = {
     'a': 1, 'b': 2, 'c': 3, 'd': 4, 'e': 5,
     'f': 6, 'g': 7, 'h': 8, 'i': 9, 'j': 10,
@@ -15,9 +19,12 @@ dictionar = {
 }
 
 
-########
-# Function that removes diacritics from a text and returns the new text
-########
+"""
+
+ Function that removes diacritics from a text and returns the new text
+
+"""
+
 def remove_diacritics(input_str):
     return ''.join(
         c for c in unicodedata.normalize('NFKD', input_str)
@@ -25,12 +32,15 @@ def remove_diacritics(input_str):
     )
 
 
-########
-# Function that takes in a file and returns a .csv with letter combinations
-#   -> As output we get a dataframe that has a lot of columns that represent
-#      letter combinations like: "ad", "bg", ...
-#   -> Each row represents the time it took to find the specific letter comb
-########
+"""
+
+ Function that takes in a file and returns a .csv with letter combinations
+   -> As output we get a dataframe that has a lot of columns that represent
+      letter combinations like: "ad", "bg", ...
+   -> Each row represents the time it took to find the specific letter comb
+
+"""
+
 def process_text_file(file_path, delta=1):
     with open(file_path, 'r', encoding='utf-8') as file:
         text_content = file.read()
@@ -55,13 +65,16 @@ def process_text_file(file_path, delta=1):
     return combinations_df
 
 
-########
-# Waiting time calculation:
-#   -> this function calculates waiting times for each combination
-#      and adds the waiting time to the corresponding letter combination column
-#      from the dataframe
-#   -> so that each waiting time is correctly added to the good column
-########
+"""
+
+ Waiting time calculation:
+   -> this function calculates waiting times for each combination
+      and adds the waiting time to the corresponding letter combination column
+      from the dataframe
+   -> so that each waiting time is correctly added to the good column
+
+"""
+
 def simplified_timpi_with_combinations(magnit, litereTrue, delta):
     timpi_astep_map = {}
     lungime2 = len(magnit)
@@ -79,11 +92,14 @@ def simplified_timpi_with_combinations(magnit, litereTrue, delta):
     return timpi_astep_map
 
 
-########
-# Function that simplifies the analysis part:
-#   -> It gives the user the possibility to input a folder containing .txt files
-#      so that the analysis can be done on more texts at once
-########
+"""
+
+ Function that simplifies the analysis part:
+   -> It gives the user the possibility to input a folder containing .txt files
+      so that the analysis can be done on more texts at once
+
+"""
+
 def select_and_process_multiple_folders():
     Tk().withdraw()
 
