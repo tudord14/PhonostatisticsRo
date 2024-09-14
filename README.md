@@ -6,5 +6,23 @@ At the moment, the project consists of **three folders**, though only **two** co
 
 In this description, I'll try my best to outline how these pieces come together, and how anyone interested can unravel and maybe even build upon this code for further research. Stay tuned for more updates as the project continues to evolve!
 
+**(statistical models used and their properties...to be completed!)**
 
-## **Steps** ## 
+## **Analysis Directory** ## 
+ *(The project uses **folders**(corresponding to an author) that hold multiple **.txt files** that represent texts written by that author.)*
+ 
+We start by assuming that the interested user has already obtained his database and is ready to study his texts!
+**The first step** should be running both of the **.py** files that have the word **extraction** in them. 
+**->** *"waiting_times_extraction.py"* takes as input a folder and outputs one 
+       **.csv** file containing the waiting times for each text from that folder.
+**->** *"letter_combination_extraction.py"* takes as input a folder and outputs     
+       **.csv** file containing the multiple columns that represent different letter 
+       combinations found in the text, and for the row values the waiting times when 
+       when that combination has been found throughout the text
+
+
+
+
+
+
+
