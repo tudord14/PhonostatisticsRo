@@ -8,17 +8,36 @@ In this description, I'll try my best to outline how these pieces come together,
 
 **(statistical models used and their properties...to be completed!)**
 
-## **Analysis Directory** ## 
- *(The project uses **folders**(corresponding to an author) that hold multiple **.txt files** that represent texts written by that author.)*
- 
-We start by assuming that the interested user has already obtained his database and is ready to study his texts!
-**The first step** should be running both of the **.py** files that have the word **extraction** in them. 
-**->** *"waiting_times_extraction.py"* takes as input a folder and outputs one 
-       **.csv** file containing the waiting times for each text from that folder.
-**->** *"letter_combination_extraction.py"* takes as input a folder and outputs     
-       **.csv** file containing the multiple columns that represent different letter 
-       combinations found in the text, and for the row values the waiting times when 
-       when that combination has been found throughout the text
+## **Analysis Directory**
+*(The project uses **folders** (corresponding to an author) that hold multiple **.txt files** representing texts written by that author.)*
+
+We start by assuming that the interested user has already obtained their database and is ready to study their texts!
+
+
+**The first step** should be running both of the **.py** files that have the word **extraction** in them.
+- **`waiting_times_extraction.py`** takes as input a folder and outputs one **.csv** file containing the waiting times for each text from that folder.
+
+- **`letter_combination_extraction.py`** takes as input a folder and outputs a **.csv** file containing multiple columns representing different letter combinations found in the text. The row values represent the waiting times when that combination has been found throughout the text.
+
+**The second step** is obtaining the **author/text fingerprint matrix** so that we can later compare it to another. To do this we can use one of the two following programs:
+
+- **`letter_combinations_max+fingerprint.py`**
+  
+- **`letter_combinations_mean+fingerprint.py`**
+
+**The third step** is actually making comparisons between already obtained **fingerprint matrix** of different texts/authors by using the function:
+- **`letter_combinations_text_comparison`**
+
+
+## **Data Acquisition Directory**
+*(These functions should work if the author can be found on **Project Gutenberg**)*
+
+Acquiring and curating data can be a **time-consuming** task, especially when large datasets are needed. To help with this, here are some functions that will make data acquisition easier for the user:
+
+- **`author_texts_extraction_epub_to_txt.py`** takes in an author's name and outputs a folder named after the author. This folder contains **.epub** and **.txt** files corresponding to texts written by that author.
+
+- **`author_directory_cleanup.py`** cleans the folder created by the function above. It deletes the **.epub** files and ensures that the **.txt** files contain only the text of interest. This function removes Project Gutenberg's extra content and any other non-related text.
+
 
 
 
