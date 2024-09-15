@@ -9,7 +9,7 @@ from tkinter import Tk, filedialog, messagebox
 """
 
 This function does the following:
-    -> Once the user runs it a folder containing more .csv files can be used
+    -> Once the user runs it, a folder containing more .csv files can be used
     -> The .csv files should be the ones obtained by running "letter_combinations_extraction.py"
     -> The files should have the following structure: "..._Combinations_WaitingTimes.csv"
     -> This function should take the csvs and create for each one two more .csv files :)
