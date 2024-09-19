@@ -6,8 +6,7 @@ from ebooklib import epub
 
 
 def transform_title(text_title):
-    return text_title.strip()
-
+    pass
 
 def search_texts(author_name):
     author_page = f"https://ro.wikisource.org/wiki/Autor:{author_name}"
@@ -17,11 +16,13 @@ def search_texts(author_name):
         soup = BeautifulSoup(response.text, 'html.parser')
         text_titles = []
 
-        for book in soup.find_all('a', href=True):
-            text_title = book.text
-            link_to_book = book['href']
-
-            text_titles.append(text_title)
+        for html_ul_elem in soup.find_all('ul'):
+            for html_li_elem in html_ul_elem.find_all('li'):
+                html_a_elem = html_li_elem.find('a')
+                if html_a_elem:
+                    text_title = html_a_elem.text
+                    link_to_book = f"https://ro.wikisource.org{html_a_elem['href']}"
+                    text_titles.append(link_to_book)
 
         print("Text titles found:")
         for title in text_titles:

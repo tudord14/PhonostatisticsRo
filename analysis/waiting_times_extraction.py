@@ -40,7 +40,7 @@ def remove_diacritics(input_str):
 """
 
 
-def calculate_waiting_times(file_path, delta=1):
+def calculate_waiting_times(file_path, delta=15):
     with open(file_path, 'r', encoding='utf-8') as file:
         text_content = file.read()
 

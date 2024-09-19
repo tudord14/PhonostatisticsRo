@@ -96,3 +96,5 @@ def select_and_process_multiple_folders():
     for directory_path in folders:
         rename_and_clean_files(directory_path)
         delete_epubs(directory_path)
+
+select_and_process_multiple_folders()
