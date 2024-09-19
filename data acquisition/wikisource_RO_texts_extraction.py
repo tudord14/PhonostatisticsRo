@@ -5,6 +5,14 @@ from bs4 import BeautifulSoup
 from ebooklib import epub
 
 
+"""
+
+STILL THINKING HOW TO DO IT!!!!!
+(wikisource is kinda strange to work with)
+
+"""
+
+
 def transform_title(text_title):
     return text_title.strip()
 
