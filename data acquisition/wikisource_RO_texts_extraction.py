@@ -3,7 +3,7 @@ import ebooklib
 import requests
 from bs4 import BeautifulSoup
 from ebooklib import epub
-
+import urllib.parse
 
 """
 
@@ -13,8 +13,9 @@ STILL THINKING HOW TO DO IT!!!!!
 """
 
 
-def transform_title(text_title):
-    pass
+def decode_url_title(encoded_html_href):
+    decoded_title = urllib.parse.unquote(encoded_html_href).replace("/wiki/", "")
+    return decoded_title.replace('_', ' ')
 
 def search_texts(author_name):
     author_page = f"https://ro.wikisource.org/wiki/Autor:{author_name}"
@@ -28,9 +29,14 @@ def search_texts(author_name):
             for html_li_elem in html_ul_elem.find_all('li'):
                 html_a_elem = html_li_elem.find('a')
                 if html_a_elem:
-                    text_title = html_a_elem.text
-                    link_to_book = f"https://ro.wikisource.org{html_a_elem['href']}"
-                    text_titles.append(link_to_book)
+                    text_title = html_a_elem.text.strip()
+                    encoded_html_href_title = html_a_elem['href']
+                    decoded_title = decode_url_title(encoded_html_href_title)
+
+                    if decoded_title == text_title:
+                        link_to_book = f"https://ro.wikisource.org{html_a_elem['href']}"
+                        print(f"Title: {text_title}, Link: {link_to_book}")
+                        text_titles.append(link_to_book)
 
         print("Text titles found:")
         for title in text_titles:
