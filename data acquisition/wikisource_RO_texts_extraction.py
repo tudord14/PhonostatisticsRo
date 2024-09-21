@@ -8,22 +8,79 @@ from bs4.element import Tag
 import re
 
 """
-
-STILL THINKING HOW TO DO IT!!!!!
-(wikisource is kinda strange to work with)
-
 UPDATE: 20.09 ->
-        -> the code obtains the texts from a specific romanian author
-        but the folder is not really "clean"
-        -> a follow up program for cleaning the folder will be created
-        ->(I hope it will happen soon)
-
+    -> The code obtains the texts from a specific Romanian author
+    but the folder is not really "clean"
+    -> A follow-up program for cleaning the folder will be created
+    -> (I hope it will happen soon)
+    
+UPDATE: 21.09 ->
+    -> The folder is a little cleaner now
+    -> I have added a list of the most notable romanian authors
+    -> This list can be used to generate all the folders at once later
 """
+
+
+authors = [
+    "Mihai Eminescu",
+    "Ion Creangă",
+    "Ion Luca Caragiale",
+    "Vasile Alecsandri",
+    "George Coșbuc",
+    "Lucian Blaga",
+    "George Bacovia",
+    "Tudor Arghezi",
+    "Nicolae Bălcescu",
+    "Octavian Goga",
+    "Dimitrie Cantemir",
+    "Alexandru Macedonski",
+    "Barbu Ștefănescu Delavrancea",
+    "Liviu Rebreanu",
+    "Ioan Slavici",
+    "Gala Galaction",
+    "Constantin Negruzzi",
+    "Alexandru Vlahuță",
+    "George Topîrceanu",
+    "Nicolae Filimon",
+    "Mateiu Caragiale",
+    "Camil Petrescu",
+    "Mircea Eliade",
+    "Eugen Lovinescu",
+    "Ion Barbu",
+    "Panait Istrati",
+    "Ion Agârbiceanu",
+    "Grigore Alexandrescu",
+    "Vasile Voiculescu",
+    "Ștefan Octavian Iosif",
+    "Mihail Sadoveanu",
+    "Ion Pillat",
+    "Zaharia Stancu",
+    "Nicolae Iorga",
+    "Vasile Pârvan",
+    "Bogdan Petriceicu Hasdeu",
+    "Costache Negruzzi",
+    "Alecu Russo",
+    "Dimitrie Bolintineanu",
+    "Ion Heliade Rădulescu",
+    "Cezar Bolliac",
+    "Traian Demetrescu",
+    "Mihail Kogălniceanu",
+    "Iacob Negruzzi",
+    "Nicolae Gane",
+    "Emanoil Bucuța",
+    "Ovid Densusianu",
+    "Ioan Alexandru Brătescu-Voinești",
+    "Alexandru Odobescu",
+    "Ion Minulescu"
+]
+
+
 
 
 def decode_url_title(encoded_html_href):
     decoded_title = urllib.parse.unquote(encoded_html_href).replace("/wiki/", "")
     return decoded_title.replace('_', ' ')
+
 
 def search_texts(author_name):
     author_page = f"https://ro.wikisource.org/wiki/Autor:{author_name}"
@@ -37,6 +94,11 @@ def search_texts(author_name):
             for html_li_elem in html_ul_elem.find_all('li'):
                 html_a_elem = html_li_elem.find('a')
                 if html_a_elem:
+                    # Skip <a> elements with color #D73333
+                    style = html_a_elem.get('style', '')
+                    if 'color: #D73333' in style.replace(' ', ''):
+                        continue
+
                     text_title = html_a_elem.text.strip()
                     encoded_html_href_title = html_a_elem['href']
                     decoded_title = decode_url_title(encoded_html_href_title)
@@ -57,13 +119,20 @@ def get_text_from_html(text_links):
         if response.status_code == 200:
             soup = BeautifulSoup(response.text, 'html.parser')
             text_title = link.replace("https://ro.wikisource.org/wiki/", "")
+            # Decode the title to handle URL-encoded characters
+            text_title = urllib.parse.unquote(text_title).replace('_', ' ')
 
-            # The text is usually contained into the html div elemnt
-            # <div class="mw-content-ltr mw-parser-output" lang="ro" dir="ltr">
+            # The text is usually contained in the <div class="mw-parser-output">
             content_div = soup.find('div', class_='mw-parser-output')
             if content_div:
+                # Remove all <span> elements
                 for span in content_div.find_all('span'):
                     span.decompose()
+
+                # Remove any <div> with id="toc" (Table of Contents)
+                toc_div = content_div.find('div', id='toc')
+                if toc_div:
+                    toc_div.decompose()
 
                 text_content = ""
                 for child in content_div.children:
@@ -82,6 +151,7 @@ def transform_texts_to_txt(texts, author_name):
     os.makedirs(author_name, exist_ok=True)
 
     for text in texts:
+        # Decode the title to handle URL-encoded characters
         title = urllib.parse.unquote(text['title'])
         content = text['content']
         sanitized_title = re.sub(r'[\\/*?:"<>|]', "_", title)
@@ -92,7 +162,12 @@ def transform_texts_to_txt(texts, author_name):
 
         print(f"Saved '{title}' to '{file_path}'")
 
+
 name = input("Author name: ")
 all_text_titles = search_texts(name)
 texts = get_text_from_html(all_text_titles)
 transform_texts_to_txt(texts, name)
+
+files_in_folder = os.listdir(name)
+num_files = len([f for f in files_in_folder if os.path.isfile(os.path.join(name, f))])
+print(f"\nTotal number of files in the folder '{name}': {num_files}")
