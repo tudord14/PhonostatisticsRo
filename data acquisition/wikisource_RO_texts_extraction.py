@@ -18,6 +18,11 @@ UPDATE: 21.09 ->
     -> The folder is a little cleaner now
     -> I have added a list of the most notable romanian authors
     -> This list can be used to generate all the folders at once later
+    
+UPDATE: 02.10 -> 
+    -> The text files now don't contain the text title and the authors name
+    -> Runs good!
+    
 """
 
 
@@ -128,6 +133,16 @@ def get_text_from_html(text_links):
                 # Remove all <span> elements
                 for span in content_div.find_all('span'):
                     span.decompose()
+
+                # Remove the <td class="titlu_titlu">
+                titlu = content_div.find('td', class_='titlu_titlu')
+                if titlu:
+                    titlu.decompose()
+
+                # Check for and remove the <a href="#top"> element
+                a_tag = content_div.find('a', href='#top')
+                if a_tag:
+                    a_tag.decompose()
 
                 # Remove any <div> with id="toc" (Table of Contents)
                 toc_div = content_div.find('div', id='toc')
