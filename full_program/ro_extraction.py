@@ -11,7 +11,7 @@ class RomanianTextExtractor:
         if not os.path.exists(self.output_directory):
             os.makedirs(self.output_directory)
         if logger is None:
-            self.logger = print  # Default to print if no logger is provided
+            self.logger = print
         else:
             self.logger = logger
 
@@ -57,13 +57,10 @@ class RomanianTextExtractor:
             if response.status_code == 200:
                 soup = BeautifulSoup(response.text, 'html.parser')
                 text_title = link.replace("https://ro.wikisource.org/wiki/", "")
-                # Decode the title to handle URL-encoded characters
                 text_title = urllib.parse.unquote(text_title).replace('_', ' ')
 
-                # The text is usually contained in the <div class="mw-parser-output">
                 content_div = soup.find('div', class_='mw-parser-output')
                 if content_div:
-                    # Remove unwanted elements
                     for tag in content_div.find_all(['span', 'td', 'a', 'div']):
                         tag.decompose()
 
@@ -85,7 +82,6 @@ class RomanianTextExtractor:
         os.makedirs(author_dir, exist_ok=True)
 
         for text in texts:
-            # Decode the title to handle URL-encoded characters
             title = urllib.parse.unquote(text['title'])
             content = text['content']
             sanitized_title = re.sub(r'[\\/*?:"<>|]', "_", title)
