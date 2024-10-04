@@ -13,13 +13,13 @@ class EnglishTextExtractor:
         if not os.path.exists(self.output_directory):
             os.makedirs(self.output_directory)
         if logger is None:
-            self.logger = print  # Default to print if no logger is provided
+            self.logger = print
         else:
             self.logger = logger
 
     def search_epub(self):
         self.logger(f"Searching for EPUB files for author {self.author_name}...")
-        # The search URL for the specific author_name from Gutenberg
+        # The search url for author name
         search_url = f'https://www.gutenberg.org/ebooks/search/?query={self.author_name}&submit_search=Go%21'
         response = requests.get(search_url)
         soup = BeautifulSoup(response.text, 'html.parser')
@@ -95,7 +95,6 @@ class EnglishTextExtractor:
                     self.logger(f"Could not find title in {file_name}, skipping.")
                     continue
 
-                # Sanitize the title to create a valid filename
                 sanitized_title = "".join(c for c in title if c.isalnum() or c in (' ', '.', '_')).rstrip()
                 new_file_name = f"{sanitized_title}.txt"
                 new_file_path = os.path.join(directory, new_file_name)
@@ -129,7 +128,5 @@ class EnglishTextExtractor:
             self.download_epub(epub_link, epub_file_path)
             self.epub_to_txt(epub_file_path, txt_file_path)
 
-        # Clean and rename files
         self.rename_and_clean_files(author_dir)
-        # Optionally delete epub files
         self.delete_epubs(author_dir)
